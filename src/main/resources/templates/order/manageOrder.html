@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+            </nav>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+                    <option value="productName">Tên Sản phẩm</option>
+                    <option value="price" >Giá</option>
+                </select>
+                <input type="search" id="search-bar" name="searchValue">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!--đã login-->
+        <div class="login-form-container">
+
+            <i class="fas fa-times" id="form-close2"></i>
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+<br><br><br><br><br><br><br>
+<form action="">
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 50px;"></th>
+            <th style="color: rgb(128,128,128); width: 50px;">STT</th>
+            <th style="color: rgb(128,128,128); width: 150px;">Where To</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Guests</th>
+            <th style="color: rgb(128,128,128); width: 200px;">Arrivals Day</th>
+            <th style="color: rgb(128,128,128); width: 200px;">Leaving Day</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Total Money</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Buyer</th>
+        </tr>
+        </thead>
+        <tbody th:each="order, iterStat : ${Orders}">
+        <tr>
+            <td style="width: 50px;"></td>
+            <td style="width: 50px;text-align: center" th:text="${iterStat.count}"></td>
+            <td style="width: 150px;text-align: center" th:text="${order.whereTo}"></td>
+            <td style="width: 100px;text-align: center" th:text="${order.arrivalsDate}"></td>
+            <td th:text="${order.leavingDate}" style="width: 200px;text-align: center"></td>
+            <td style="width: 200px;text-align: center" th:text="${order.totalMoney}"></td>
+            <td style="width: 100px;text-align: center" th:text="${order.user.username}"></td>
+            <td style="width: 100px;text-align: center;">
+                <a th:href="@{'/admin/account/show?username='+${order.user.username}}">Xem</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    #sidebar {
+        width: 200px;
+        background-color: #f2f2f2;
+    }
+    #sidebar-right {
+        width: 200px;
+        background-color: #f2f2f2;
+    }
+
+    #sidebar nav {
+        height: 100%;
+    }
+
+    #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #sidebar li {
+        margin-bottom: 8px;
+    }
+
+    #sidebar a {
+        display: block;
+        padding: 8px;
+        background-color: #ddd;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #sidebar a:hover {
+        background-color: #eee;
+    }
+
+    #ads img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        margin-bottom: 8px;
+    }
+
+    #social-media h3 {
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    #social-media ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    #social-media li {
+        margin: 0 8px;
+    }
+
+    #social-media a {
+        display: block;
+        padding: 8px;
+        background-color: #ddd;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #social-media a:hover {
+        background-color: #eee;
+    }
+    #container {
+        display: flex;
+        height: 100%;
+    }
+
+    #sidebar {
+        width: 200px;
+        background-color: #f2f2f2;
+    }
+
+    #profile {
+        flex: 1;
+        padding: 16px;
+        box-sizing: border-box;
+        background-color: #f2f2f2;
+    }
+
+    #profile-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #profile-form label {
+        margin-bottom: 8px;
+    }
+
+    #profile-form input,
+    #profile-form select {
+        margin-bottom: 30px;
+    }
+
+    #image-preview {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-image {
+        width: 100px; /* Adjust the width as needed */
+        height: 100px; /* Adjust the height as needed */
+        border-radius: 50%; /* Make the image circular */
+        object-fit: cover; /* Ensure the image fits the box */
+        margin-right: 10px; /* Add some spacing between the image and text */
+    }
+
+    .user-text {
+        align-self: center;
+        font-weight: unset;
+    }
+    .highlight {
+        background-color: #f0f0f0; /* Light gray background */
+        padding: 2px 5px; /* Add some padding around the text */
+        margin: 0 5px; /* Add some space around the text */
+        font-weight: normal;
+    }
+
+</style>
+<body>
+<br><br><br><br><br><br><br><br>
+<header>
+    <div id="menu-bar" class="fas fa-bars"></div>
+    <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+    <div th:if="${mainUsername != 'admin'}">
+        <nav class="navbar">
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/api/home#packages}">packages</a>
+            <a th:href="@{/api/home#services}">services</a>
+            <a th:href="@{/api/home#gallery}">gallery</a>
+            <a th:href="@{/api/home#review}">review</a>
+            <a th:href="@{/api/home#contact}">contact</a>
+            <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+        </nav>
+    </div>
+    <div th:if="${mainUsername == 'admin'}">
+        <nav class="navbar">
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/admin/product/add}">add product</a>
+            <a th:href="@{/admin/game/add}">add game</a>
+            <a th:href="@{/admin/product/manage}">product</a>
+            <a th:href="@{/admin/account/manage}">account</a>
+            <a th:href="@{/admin/order/manage}">order</a>
+            <a th:href="@{/admin/game/manage}">game</a>
+        </nav>
+    </div>
+    <div class="icons">
+        <i class="fas fa-search" id="search-btn"></i>
+        <i class="fas fa-user" id="login-btn"></i>
+        <span th:if="${mainUsername!=null}" th:text="${mainUsername}" style="color: white;"></span>
+    </div>
+    <!--Filter -->
+    <form th:action="@{/api/search}" method="post" class="search-bar-container">
+        <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+            <option value="productName">Tên Sản phẩm</option>
+            <option value="price" >Giá</option>
+        </select>
+        <input type="search" id="search-bar" name="searchValue">
+        <label for="search-bar" class="fas fa-search"></label>
+    </form>
+    <!--End Filter -->
+</header>
+<!-- header section ends -->
+<!-- login form container  -->
+<!--chưa login-->
+<div class="login-form-container" th:if="${mainUsername==null}">
+
+    <i class="fas fa-times" id="form-close"></i>
+    <form action="">
+        <h3>options</h3>
+        <p>login <a th:href="@{/user/login}">click here</a></p>
+        <p>forget password? <a th:href="@{/user/getPassword}">click here</a></p>
+        <p>don't have and account? <a th:href="@{/user/register}">register now</a></p>
+        <hr>
+        <p>home <a th:href="@{/api/home}">click here</a></p>
+    </form>
+
+</div>
+<!--đã login-->
+<div class="login-form-container" th:if="${mainUsername!=null}">
+
+    <i class="fas fa-times" id="form-close2"></i>
+    <div th:if="${mainUsername != 'admin'}">
+        <form action="">
+            <h3>tài khoản</h3>
+            <p>Tiền: <span th:text="${money}"></span></p>
+            <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+            <p>lịch sử giao dịch <a th:href="@{/api/book/show}">click here</a></p>
+            <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+            <hr>
+            <p>home <a th:href="@{/api/home}">click here</a></p>
+        </form>
+    </div>
+    <div th:if="${mainUsername == 'admin'}">
+        <form action="">
+            <h3>tài khoản</h3>
+            <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+            <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+            <hr>
+            <p>home <a th:href="@{/api/home}">click here</a></p>
+        </form>
+    </div>
+</div>
+
+
+<div id="container">
+    <aside id="sidebar">
+        <div class="user-info">
+            <img th:src="${linkAvatar}" alt="User Image" class="user-image">
+            <h3 class="user-text" th:text="${username}"></h3>
+        </div>
+        <hr>
+        <nav>
+            <h4 class = "highlight">Tiền:<span th:text="${money}">$</span></h4>
+            <div th:if="${mainUsername != 'admin' || (username == 'admin' && mainUsername == 'admin')}">
+                <ul>
+                    <li><a th:href="@{/user/game}">Kiếm xu</a></li>
+                    <li><a th:href="@{/user/changePassword}">Thay đổi mật khẩu</a></li>
+                    <li><a th:href="@{/api/book/show}">Đơn hàng của tôi</a></li>
+                    <hr>
+                    <li><a th:href="@{/user/logout}">Đăng xuất</a></li>
+                </ul>
+            </div>
+            <div th:if="${mainUsername == 'admin' && username != 'admin'}">
+                <ul>
+                    <li class="highlight">Kiếm xu</li>
+                    <li class="highlight">Thay đổi mật khẩu</li>
+                    <li class="highlight">Đơn hàng của tôi</li>
+                    <hr>
+                    <li class="highlight">Đăng xuất</li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+    <section id="profile">
+        <div style="text-align: left">
+            <h1 style="font-weight: normal;">Hồ Sơ Của Tôi</h1>
+            <h4 style="font-weight: unset;">Quản lý thông tin hồ sơ để bảo mật tài khoản</h4>
+        </div>
+        <br>
+        <br><hr>
+        <form id="profile-form" th:action="@{/user/changeInfo}" method="POST">
+            <input name="username" th:value="${username}" type="hidden">
+            <label>Username: <span class = "highlight" th:text="${username}"></span></label><br>
+            <label for="fullName">FullName:</label>
+            <input type="text" id="fullName" name="fullName" th:value="${fullName}"><br>
+            <label>Email: <span class = "highlight" th:text="${email}"></span></label> <div th:if="${mainUsername != 'admin' || (username == 'admin' && mainUsername == 'admin')}"><a class = "highlight" th:href="@{/user/email}">Thay đổi</a></div>  <br>
+            <label for="tel">Tel:</label>
+            <input type="tel" id="tel" name="tel" th:value="${tel}" pattern="[0-9]*" onchange="checkTel()"><span id="inform" style="color: red"></span><br>
+            <label for="country" class="form-label">Quốc gia</label>
+            <select id="country" name="country" class="form-control">
+                <option th:selected="${country == 'AD'}">Andorra</option>
+                <option value="AF" th:selected="${country == 'AF'}">Afghanistan</option>
+                <option value="AG" th:selected="${country == 'AG'}">Antigua and Barbuda</option>
+                <option value="AI" th:selected="${country == 'AI'}">Anguilla</option>
+                <option value="AL" th:selected="${country == 'AL'}">Albania</option>
+                <option value="AM" th:selected="${country == 'AM'}">Armenia</option>
+                <option value="AN" th:selected="${country == 'AN'}">Netherlands Antilles</option>
+                <option value="AO" th:selected="${country == 'AO'}">Angola</option>
+                <option value="AQ" th:selected="${country == 'AQ'}">Antarctica</option>
+                <option value="AR" th:selected="${country == 'AR'}">Argentina</option>
+                <option value="AS" th:selected="${country == 'AS'}">American Samoa</option>
+                <option value="AT" th:selected="${country == 'AT'}">Austria</option>
+                <option value="AUS" th:selected="${country == 'AUS'}">Australia</option>
+                <option value="AW" th:selected="${country == 'AW'}">Aruba</option>
+                <option value="AZ" th:selected="${country == 'AZ'}">Azerbaijan</option>
+                <option value="BA" th:selected="${country == 'BA'}">Bosnia and Herzegowina</option>
+                <option value="BAN" th:selected="${country == 'BAN'}">Bangladesh</option>
+                <option value="BB" th:selected="${country == 'BB'}">Barbados</option>
+                <option value="BD" th:selected="${country == 'BD'}">Bangladesh</option>
+                <option value="BEL" th:selected="${country == 'BEL'}">Belgium</option>
+                <option value="BF" th:selected="${country == 'BF'}">Burkina Faso</option>
+                <option value="BG" th:selected="${country == 'BG'}">Bulgaria</option>
+                <option value="BH" th:selected="${country == 'BH'}">Bahrain</option>
+                <option value="BI" th:selected="${country == 'BI'}">Burundi</option>
+                <option value="BJ" th:selected="${country == 'BJ'}">Benin</option>
+                <option value="BM" th:selected="${country == 'BM'}">Bermuda</option>
+                <option value="BN" th:selected="${country == 'BN'}">Brunei Darussalam</option>
+                <option value="BO" th:selected="${country == 'BO'}">Bolivia</option>
+                <option value="BRA" th:selected="${country == 'BRA'}">Brazil</option>
+                <option value="BRN" th:selected="${country == 'BRN'}">Brunei</option>
+                <option value="BS" th:selected="${country == 'BS'}">Bahamas</option>
+                <option value="BT" th:selected="${country == 'BT'}">Bhutan</option>
+                <option value="BV" th:selected="${country == 'BV'}">Bouvet Island</option>
+                <option value="BW" th:selected="${country == 'BW'}">Botswana</option>
+                <option value="BY" th:selected="${country == 'BY'}">Belarus</option>
+                <option value="BZ" th:selected="${country == 'BZ'}">Belize</option>
+                <option value="CA" th:selected="${country == 'CA'}">Canada</option>
+                <option value="CAM" th:selected="${country == 'CAM'}">Cambodia</option>
+                <option value="CC" th:selected="${country == 'CC'}">Cocos Islands</option>
+                <option value="CD" th:selected="${country == 'CD'}">Congo, The democratic republic of the</option>
+                <option value="CF" th:selected="${country == 'CF'}">Central Africa Republic</option>
+                <option value="CG" th:selected="${country == 'CG'}">Congo</option>
+                <option value="CH" th:selected="${country == 'CH'}">Switzerland</option>
+                <option value="CHN" th:selected="${country == 'CHN'}">China</option>
+                <option value="CI" th:selected="${country == 'CI'}">Code DIvoire</option>
+                <option value="CK" th:selected="${country == 'CK'}">Cook Island</option>
+                <option value="CL" th:selected="${country == 'CL'}">Chile</option>
+                <option value="CM" th:selected="${country == 'CM'}">Cameroon</option>
+                <option value="CO" th:selected="${country == 'CO'}">Colombia</option>
+                <option value="CR" th:selected="${country == 'CR'}">Costa Rica</option>
+                <option value="CU" th:selected="${country == 'CU'}">Cuba</option>
+                <option value="CV" th:selected="${country == 'CV'}">Cape Verde</option>
+                <option value="CX" th:selected="${country == 'CX'}">Christmas Island</option>
+                <option value="CY" th:selected="${country == 'CY'}">Cyprus</option>
+                <option value="CZ" th:selected="${country == 'CZ'}">Czech Republic</option>
+                <option value="DJ" th:selected="${country == 'DJ'}">Djibouti</option>
+                <option value="DK" th:selected="${country == 'DK'}">Denmark</option>
+                <option value="DM" th:selected="${country == 'DM'}">Dominica</option>
+                <option value="DO" th:selected="${country == 'DO'}">Dominican Republic</option>
+                <option value="DZ" th:selected="${country == 'DZ'}">Algeria</option>
+                <option value="EC" th:selected="${country == 'EC'}">Ecuador</option>
+                <option value="EE" th:selected="${country == 'EE'}">Estonia</option>
+                <option value="EG" th:selected="${country == 'EG'}">Egypt</option>
+                <option value="EH" th:selected="${country == 'EH'}">Western Sahara</option>
+                <option value="EN" th:selected="${country == 'EN'}">United Kingdom</option>
+                <option value="ER" th:selected="${country == 'ER'}">Eritrea</option>
+                <option value="ES" th:selected="${country == 'ES'}">Spain</option>
+                <option value="ET" th:selected="${country == 'ET'}">Ethiopia</option>
+                <option value="FI" th:selected="${country == 'FI'}">Finland</option>
+                <option value="FJ" th:selected="${country == 'FJ'}">Fiji</option>
+                <option value="FK" th:selected="${country == 'FK'}">Falkland Islands (Malvinas)</option>
+                <option value="FM" th:selected="${country == 'FM'}">Micronesia Federated States Of</option>
+                <option value="FO" th:selected="${country == 'FO'}">Faroe Islands</option>
+                <option value="FR" th:selected="${country == 'FR'}">France</option>
+                <option value="FX" th:selected="${country == 'FX'}">France Metropolitan</option>
+                <option value="GA" th:selected="${country == 'GA'}">Gabon</option>
+                <option value="GB" th:selected="${country == 'GB'}">United Kingdom</option>
+                <option value="GD" th:selected="${country == 'GD'}">Grenada</option>
+                <option value="GE" th:selected="${country == 'GE'}">Georgia</option>
+                <option value="GER" th:selected="${country == 'GER'}">Germany</option>
+                <option value="GF" th:selected="${country == 'GF'}">French Guiana</option>
+                <option value="GH" th:selected="${country == 'GH'}">Ghana</option>
+                <option value="GI" th:selected="${country == 'GI'}">Gibraltar</option>
+                <option value="GL" th:selected="${country == 'GL'}">Greenland</option>
+                <option value="GM" th:selected="${country == 'GM'}">Gambia</option>
+                <option value="GN" th:selected="${country == 'GN'}">Guinea</option>
+                <option value="GP" th:selected="${country == 'GP'}">Guadeloupe</option>
+                <option value="GQ" th:selected="${country == 'GQ'}">Equatorial Guinea</option>
+                <option value="GR" th:selected="${country == 'GR'}">Greece</option>
+                <option value="GS" th:selected="${country == 'GS'}">South Georgia and South S.S</option>
+                <option value="GT" th:selected="${country == 'GT'}">Guatemala</option>
+                <option value="GU" th:selected="${country == 'GU'}">Guam</option>
+                <option value="GW" th:selected="${country == 'GW'}">Guinea-Bissau</option>
+                <option value="GY" th:selected="${country == 'GY'}">Guyana</option>
+                <option value="HKG" th:selected="${country == 'HKG'}">Hong Kong</option>
+                <option value="HL" th:selected="${country == 'HL'}">Netherlands </option>
+                <option value="HM" th:selected="${country == 'HM'}">Heard Island and Mcdonald Islands</option>
+                <option value="HN" th:selected="${country == 'HN'}">Honduras</option>
+                <option value="HR" th:selected="${country == 'HR'}">Croatia</option>
+                <option value="HT" th:selected="${country == 'HT'}">Haiti</option>
+                <option value="HU" th:selected="${country == 'HU'}">Hungary</option>
+                <option value="IE" th:selected="${country == 'IE'}">Ireland</option>
+                <option value="IL" th:selected="${country == 'IL'}">Israel</option>
+                <option value="IND" th:selected="${country == 'IND'}">Indian</option>
+                <option value="INR" th:selected="${country == 'INR'}">Iran</option>
+                <option value="INS" th:selected="${country == 'INS'}">Indonesia</option>
+                <option value="IO" th:selected="${country == 'IO'}">Bristish India Ocean Territory</option>
+                <option value="IQ" th:selected="${country == 'IQ'}">IRAQ</option>
+                <option value="IR" th:selected="${country == 'IR'}">Iran</option>
+                <option value="IRA" th:selected="${country == 'IRA'}">Irac</option>
+                <option value="IS" th:selected="${country == 'IS'}">Iceland</option>
+                <option value="ITA" th:selected="${country == 'ITA'}">Italy</option>
+                <option value="JM" th:selected="${country == 'JM'}">Jamaica</option>
+                <option value="JO" th:selected="${country == 'JO'}">Jordan</option>
+                <option value="JOR" th:selected="${country == 'JOR'}">Jordan</option>
+                <option value="JP" th:selected="${country == 'JP'}">Japan</option>
+                <option value="KE" th:selected="${country == 'KE'}">Kenya</option>
+                <option value="KG" th:selected="${country == 'KG'}">Kyrgyzstan</option>
+                <option value="KI" th:selected="${country == 'KI'}">Kiribati</option>
+                <option value="KM" th:selected="${country == 'KM'}">Comoros</option>
+                <option value="KN" th:selected="${country == 'KN'}">Saint Kitts And Nevis</option>
+                <option value="KOR" th:selected="${country == 'KOR'}">South Korea</option>
+                <option value="KP" th:selected="${country == 'KP'}">North Korea</option>
+                <option value="KR" th:selected="${country == 'KR'}">Korea Republic of</option>
+                <option value="KW" th:selected="${country == 'KW'}">Kuwait</option>
+                <option value="KY" th:selected="${country == 'KY'}">Cayman Islands</option>
+                <option value="KZ" th:selected="${country == 'KZ'}">Kazakhstan</option>
+                <option value="LAO" th:selected="${country == 'LAO'}">Lao</option>
+                <option value="LB" th:selected="${country == 'LB'}">Lebanon</option>
+                <option value="LC" th:selected="${country == 'LC'}">Saint Lucia</option>
+                <option value="LI" th:selected="${country == 'LI'}">Liechtenstein</option>
+                <option value="LK" th:selected="${country == 'LK'}">Sri Lanka</option>
+                <option value="LR" th:selected="${country == 'LR'}">Liberia</option>
+                <option value="LS" th:selected="${country == 'LS'}">Lesotho</option>
+                <option value="LT" th:selected="${country == 'LT'}">Lithuania</option>
+                <option value="LU" th:selected="${country == 'LU'}">Luxembourg</option>
+                <option value="LV" th:selected="${country == 'LV'}">Latvia</option>
+                <option value="LY" th:selected="${country == 'LY'}">Libyan Arab Jamahiriya</option>
+                <option value="MA" th:selected="${country == 'MA'}">Morroco</option>
+                <option value="MAL" th:selected="${country == 'MAL'}">Malaysia</option>
+                <option value="MC" th:selected="${country == 'MC'}">Monaco</option>
+                <option value="MD" th:selected="${country == 'MD'}">Moldova Republic Of</option>
+                <option value="ME" th:selected="${country == 'ME'}">Montenegro</option>
+                <option value="MG" th:selected="${country == 'MG'}">Madagascar</option>
+                <option value="MH" th:selected="${country == 'MH'}">Marshall Island</option>
+                <option value="MK" th:selected="${country == 'MK'}">Macedonia</option>
+                <option value="ML" th:selected="${country == 'ML'}" >Mali</option>
+                <option value="MM" th:selected="${country == 'MM'}" >Myanmar</option>
+                <option value="MN" th:selected="${country == 'MN'}" >Mongolia</option>
+                <option value="MO" th:selected="${country == 'MO'}" >Macao</option>
+                <option value="MP" th:selected="${country == 'MP'}" >Northern Mariana Islands</option>
+                <option value="MQ" th:selected="${country == 'MQ'}">Martinique</option>
+                <option value="MR" th:selected="${country == 'MR'}" >Mauritania</option>
+                <option value="MS" th:selected="${country == 'MS'}">Montserrat</option>
+                <option value="MT" th:selected="${country == 'MT'}" >Malta</option>
+                <option value="MU" th:selected="${country == 'MU'}" >Mauritius</option>
+                <option value="MV" th:selected="${country == 'MV'}" >Maldives</option>
+                <option value="MW" th:selected="${country == 'MW'}" >Malawi</option>
+                <option value="MX" th:selected="${country == 'MX'}" >Mehico</option>
+                <option value="MY" th:selected="${country == 'MY'}" >Mala</option>
+                <option value="MZ" th:selected="${country == 'MZ'}" >Mozambique</option>
+                <option value="NA" th:selected="${country == 'NA'}">Namibia</option>
+                <option value="NC" th:selected="${country == 'NC'}" >New Caledonia</option>
+                <option value="NE" th:selected="${country == 'NE'}" >Niger</option>
+                <option value="NF" th:selected="${country == 'NF'}" >Norfolk Island</option>
+                <option value="NG" th:selected="${country == 'NG'}" >Nigeria</option>
+                <option value="NI" th:selected="${country == 'NI'}" >Nicaragua</option>
+                <option value="NO" th:selected="${country == 'NO'}" >Nauy</option>
+                <option value="NP" th:selected="${country == 'NP'}" >Nepal</option>
+                <option value="NR" th:selected="${country == 'NR'}" >Nauru</option>
+                <option value="NU" th:selected="${country == 'NU'}" >Niue</option>
+                <option value="NZ" th:selected="${country == 'NZ'}" >New Zealand</option>
+                <option value="OM" th:selected="${country == 'OM'}" >Oman</option>
+                <option value="PA" th:selected="${country == 'PA'}" >Panama</option>
+                <option value="PE" th:selected="${country == 'PE'}" >Peru</option>
+                <option value="PF" th:selected="${country == 'PF'}" >French Polynesia</option>
+                <option value="PG" th:selected="${country == 'PG'}" >Papua New Guinea</option>
+                <option value="PH" th:selected="${country == 'PH'}" >Philippines</option>
+                <option value="PK" th:selected="${country == 'PK'}">Pakistan</option>
+                <option value="PL" th:selected="${country == 'PL'}" >Poland</option>
+                <option value="PM" th:selected="${country == 'PM'}" >St. Pierre And Miquelon</option>
+                <option value="PT" th:selected="${country == 'PT'}" >Portugal</option>
+                <option value="PW" th:selected="${country == 'PW'}" >Palau</option>
+                <option value="PY" th:selected="${country == 'PY'}" >Paraguay</option>
+                <option value="QA" th:selected="${country == 'QA'}">Qatar</option>
+                <option value="RS" th:selected="${country == 'RS'}" >Serbia</option>
+                <option value="RU" th:selected="${country == 'RU'}" >Russia</option>
+                <option value="SA" th:selected="${country == 'SA'}">Saudi Arabia</option>
+                <option value="SB" th:selected="${country == 'SB'}" >Solomon Island</option>
+                <option value="SC" th:selected="${country == 'SC'}" >Seychelles</option>
+                <option value="SE" th:selected="${country == 'SE'}" >Sweden</option>
+                <option value="SH" th:selected="${country == 'SH'}" >St. Helena</option>
+                <option value="SI" th:selected="${country == 'SI'}" >Slovenia</option>
+                <option value="SIN" th:selected="${country == 'SIN'}">Singapore</option>
+                <option value="SJ" th:selected="${country == 'SJ'}" >Svalbard and Jan Mayen Islands</option>
+                <option value="SK" th:selected="${country == 'SK'}">Slovakia</option>
+                <option value="SL" th:selected="${country == 'SL'}">Sierra Leone</option>
+                <option value="SN" th:selected="${country == 'SN'}" >Senegal</option>
+                <option value="SO" th:selected="${country == 'SO'}" >Somalia</option>
+                <option value="SR" th:selected="${country == 'SR'}">Suriname</option>
+                <option value="SS" th:selected="${country == 'SS'}" >South Sudan</option>
+                <option value="ST" th:selected="${country == 'ST'}" >Sao Tome And Principe</option>
+                <option value="SUD" th:selected="${country == 'SUD'}" >Sudan</option>
+                <option value="SV" th:selected="${country == 'SV'}">El Salvador</option>
+                <option value="SY" th:selected="${country == 'SY'}" >Syrian Arab Republic</option>
+                <option value="SZ" th:selected="${country == 'SZ'}" >Swaziland</option>
+                <option value="TC" th:selected="${country == 'TC'}" >Turks And Caicos Island</option>
+                <option value="TD" th:selected="${country == 'TD'}" >Chad</option>
+                <option value="TF" th:selected="${country == 'TF'}" >French Southern Territories</option>
+                <option value="TG" th:selected="${country == 'TG'}">Togo</option>
+                <option value="TJ" th:selected="${country == 'TJ'}">Tajikistan</option>
+                <option value="TK" th:selected="${country == 'TK'}">Tokelau</option>
+                <option value="TL" th:selected="${country == 'TL'}" >Thailand</option>
+                <option value="TM" th:selected="${country == 'TM'}" >Turkmenistan</option>
+                <option value="TN" th:selected="${country == 'TN'}" >Tunisia</option>
+                <option value="TO" th:selected="${country == 'TO'}" >Tonga</option>
+                <option value="TP" th:selected="${country == 'TP'}" >East Timor</option>
+                <option value="TQ" th:selected="${country == 'TQ'}" >Trung Quốc</option>
+                <option value="TR" th:selected="${country == 'TR'}" >Turkey</option>
+                <option value="TT" th:selected="${country == 'TT'}" >Trinidad and Tobago</option>
+                <option value="TV" th:selected="${country == 'TV'}" >Tuvalu</option>
+                <option value="TW" th:selected="${country == 'TW'}" >Taiwan</option>
+                <option value="TZ" th:selected="${country == 'TZ'}" >Tanzania</option>
+                <option value="UA" th:selected="${country == 'UA'}">Ukraine</option>
+                <option value="UEA" th:selected="${country == 'UEA'}">United Arab Emirates</option>
+                <option value="UG" th:selected="${country == 'UG'}" >Uganda</option>
+                <option value="UM" th:selected="${country == 'UM'}">U.S Minor Island</option>
+                <option th:selected="${country == 'USA'}" value="USA">United States of America</option>
+                <option th:selected="${country == 'UY'}" value="UY">Uruguay</option>
+                <option th:selected="${country == 'UZ'}" value="UZ">Uzbekistan</option>
+                <option th:selected="${country == 'VA'}" value="VA">Vatican City State</option>
+                <option th:selected="${country == 'VC'}" value="VC">Saint Vincent And The Grenadines</option>
+                <option th:selected="${country == 'VE'}" value="VE">Venezuala</option>
+                <option th:selected="${country == 'VG'}" value="VG">Virgin Island (British)</option>
+                <option th:selected="${country == 'VI'}" value="VI">Virgin Island (U.S)</option>
+                <option th:selected="${country == 'VN'}" value="VN">Viet Nam</option>
+                <option th:selected="${country == 'VU'}" value="VU">Vanuatu</option>
+                <option th:selected="${country == 'WF'}" value="WF">Wallis And Futuna Island</option>
+                <option th:selected="${country == 'WS'}" value="WS">Samoa</option>
+                <option th:selected="${country == 'YE'}" value="YE">Yemen</option>
+                <option th:selected="${country == 'YT'}" value="YT">Mayotte</option>
+                <option th:selected="${country == 'ZA'}" value="ZA">South Africa</option>
+                <option th:selected="${country == 'ZM'}" value="ZM">Zambia</option>
+                <option th:selected="${country == 'ZW'}" value="ZW">Zimbabwe</option>
+            </select>
+            <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="nam" th:selected="${gender=='nam'}">Nam</option>
+                    <option value="nữ" th:selected="${gender=='nữ'}">Nữ</option>
+                    <option value="other" th:selected="${gender=='other'}">Khác</option>
+                </select>
+           <br>
+            <label for="dateOfBirth">Birthday:</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${dateOfBirth}">
+            <div th:if="${mainUsername != 'admin' || (username == 'admin' && mainUsername == 'admin')}">
+                <input style="background-color: red;border-color: white;color: white;width: 10%;height: 30px" type="submit" id="submitInfo" value="Save">
+            </div>
+        </form>
+
+    </section>
+    <aside id="sidebar-right">
+        <form th:action="@{/api/uploadFile}" method="post" enctype="multipart/form-data">
+            <img id="image-preview" th:src="${linkAvatar}" alt="Preview">
+                <label for="image-input">
+                    <input required="required" type="file" id="image-input" name="linkAvatar" accept=".jpg,.jpeg,.png">
+                </label>
+            <input type="hidden" name = "oldLinkAvatar" th:value="${linkAvatar}">
+            <p>Dụng lượng file tối đa 1 MB</p>
+            <p>Định dạng:.JPEG, .PNG</p>
+            <div th:if="${mainUsername != 'admin' || (username == 'admin' && mainUsername == 'admin')}">
+                <input type="submit" id="submit" value="Upload" style="border-color: white;color: white;height: 30px;width: 40%;;background-color: green">
+            </div>
+        </form>
+    </aside>
+</div>
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>about me</h3>
+            <p>Hi everyone,I'm Hòa and 20-year old.I'm a developer</p>
+        </div>
+        <div class="box">
+            <h3>branch locations</h3>
+            <p>India</p>
+            <p>USA</p>
+            <p>Japan</p>
+            <p>France</p>
+            <p>Việt Nam</p>
+        </div>
+        <div class="box">
+            <h3>quick links</h3>
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/api/home#packages}">packages</a>
+            <a th:href="@{/api/home#services}">services</a>
+            <a th:href="@{/api/home#gallery}">gallery</a>
+            <a th:href="@{/api/home#review}">review</a>
+            <a th:href="@{/api/home#contact}">contact</a>
+        </div>
+        <div class="box">
+            <h3>Follow me</h3>
+            <a href="https://www.facebook.com/profile.php?id=61552792606499">facebook</a>
+            <a href="https://github.com/hoaiT2004">github</a>
+            <a href="https://www.youtube.com/channel/UCH35WVklVhJ3USrFCr9ea7w">youtube</a>
+        </div>
+    </div>
+
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+
+</section>
+<script type="text/javascript">
+    function checkTel(){
+        let tel = document.getElementById("tel");
+        let ok = 0;
+        for(let i = 0;i < tel.value.length;i++){
+            if(tel.value[i] >= 0 && tel.value[i] <= 9){
+
+            }else ok = 1;
+        }
+        if(ok){
+            document.getElementById("inform").innerHTML = "The phone number must be numberic.";
+            document.getElementById("submitInfo").style.display = "none";
+        }else{
+            if(tel.value.length === 10 || tel.value.length === 12){
+                document.getElementById("inform").innerHTML = "";
+                document.getElementById("submitInfo").style.display = "block";
+            }else{
+                document.getElementById("inform").innerHTML = "The length of the phone number must be 10 or 12.";
+                document.getElementById("submitInfo").style.display = "none";
+            }
+        }
+
+    }
+</script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

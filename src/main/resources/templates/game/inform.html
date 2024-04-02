@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    input[type="button"] {
+        padding: 30px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 40px;
+    }
+    input[type="button"]:hover {
+        background-color: #f1f1f1;
+    }
+    fieldset {
+        border: 1px solid #ccc;
+        padding: 50px;
+        width: 400px;
+        height: 300px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/api/home#package}">packages</a>
+                <a th:href="@{/api/home#services}">services</a>
+                <a th:href="@{/api/home#gallery}">gallery</a>
+                <a th:href="@{/api/home#review}">review</a>
+                <a th:href="@{/api/home#contact}">contact</a>
+                <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+            </nav>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+                    <option value="productName">Tên Sản phẩm</option>
+                    <option value="price" >Giá</option>
+                </select>
+                <input type="search" id="search-bar" name="searchValue">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!-- header section ends -->
+        <div class="login-form-container">
+            <i class="fas fa-times" id="form-close2"></i>
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>Tiền: <span th:text="${money}"></span></p>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+        </div>
+<!--Main -->
+<br><br><br><br><br><br>
+        <fieldset>
+            <form action="">
+                <h1 style="text-align: center;">KẾT QUẢ</h1>
+                <h3 style="text-align: center" th:text="'Bạn đã trả lời đúng:'+${trueQuestionNumber}+'/'+${totalQuestion}"></h3>
+                <br><br>
+                <input type="button" value="Home" id="button-A">
+                <input type="button" value="Go on" id="button-B">
+            </form>
+        </fieldset>
+<!--End Main-->
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script>
+    document.getElementById('button-A').addEventListener('click', () => {
+        window.location.href = '/api/home';
+    });
+    document.getElementById('button-B').addEventListener('click', () => {
+        window.location.href = '/user/game';
+    });
+</script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

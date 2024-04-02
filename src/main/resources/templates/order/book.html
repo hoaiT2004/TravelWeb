@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+    <!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+        <div th:if="${role != 'ADMIN'}">
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/api/home#packages}">packages</a>
+                <a th:href="@{/api/home#services}">services</a>
+                <a th:href="@{/api/home#gallery}">gallery</a>
+                <a th:href="@{/api/home#review}">review</a>
+                <a th:href="@{/api/home#contact}">contact</a>
+                <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+            </nav>
+        </div>
+        <div th:if="${role == 'ADMIN'}">
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+
+            </nav>
+        </div>
+        <div class="icons">
+            <i class="fas fa-search" id="search-btn"></i>
+            <i class="fas fa-user" id="login-btn"></i>
+            <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+        </div>
+        <!--Filter -->
+        <form th:action="@{/api/search}" method="post" class="search-bar-container">
+            <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+                <option value="productName">Tên Sản phẩm</option>
+                <option value="price" >Giá</option>
+            </select>
+            <input type="search" id="search-bar" name="searchValue">
+            <label for="search-bar" class="fas fa-search"></label>
+        </form>
+        <!--End Filter -->
+    </header>
+    <!-- header section ends -->
+    <!-- login form container  -->
+    <!--chưa login-->
+    <div class="login-form-container" th:if="${username==null}">
+
+        <i class="fas fa-times" id="form-close"></i>
+        <form action="">
+            <h3>options</h3>
+            <p>login <a th:href="@{/user/login}">click here</a></p>
+            <p>forget password? <a th:href="@{/user/getPassword}">click here</a></p>
+            <p>don't have and account? <a th:href="@{/user/register}">register now</a></p>
+            <hr>
+            <p>home <a th:href="@{/api/home}">click here</a></p>
+        </form>
+
+    </div>
+    <!--đã login-->
+    <div class="login-form-container" th:if="${username!=null}">
+
+        <i class="fas fa-times" id="form-close2"></i>
+        <div th:if="${role != 'ADMIN'}">
+            <form action="">
+                <h3>tài khoản</h3>
+                <p>Tiền: <span th:text="${moneyUser}"></span></p>
+                <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                <p>lịch sử giao dịch <a th:href="@{/api/book/show}">click here</a></p>
+                <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                <hr>
+                <p>home <a th:href="@{/api/home}">click here</a></p>
+            </form>
+        </div>
+        <div th:if="${role == 'ADMIN'}">
+            <form action="">
+                <h3>tài khoản</h3>
+                <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                <hr>
+                <p>home <a th:href="@{/api/home}">click here</a></p>
+            </form>
+        </div>
+    </div>
+<!-- end header  -->
+<!-- book section starts  -->
+
+<section class="book" id="book">
+
+    <h1 class="heading">
+        <span>b</span>
+        <span>o</span>
+        <span>o</span>
+        <span>k</span>
+        <span class="space"></span>
+        <span>n</span>
+        <span>o</span>
+        <span>w</span>
+    </h1>
+
+    <div class="row">
+
+        <div class="image">
+            <img src="/images/book-img.svg" alt="">
+        </div>
+
+        <form th:action="@{/api/book}" method="post">
+            <div th:if="${error != null}">
+                <p style="text-align: center;color: red" th:text="${error}"></p>
+            </div>
+            <p id="error" style="text-align: center"></p>
+            <div class="inputBox">
+                <p th:text="'Tiền của bạn:'+${moneyUser}"></p>
+            </div>
+            <div class="inputBox">
+                <h3>where to</h3>
+                <input required="required" type="text" name="whereTo" th:value="${whereTo}" placeholder="place name">
+            </div>
+            <div class="inputBox">
+                <h3>how many</h3>
+                <input required="required" type="number" value="1" name="guests" placeholder="number of guests" id="guests" onchange="calculateTotalCost()">
+            </div>
+            <div class="inputBox">
+                <h3>arrivals</h3>
+                <input required="required" name="arrivalsDate" type="date">
+            </div>
+            <div class="inputBox">
+                <h3>leaving</h3>
+                <input required="required" name="leavingDate" type="date">
+            </div>
+            <div class="inputBox">
+                <h3>Total Money</h3>
+                <h4 id="totalCost" th:text="${totalMoney}"></h4>
+            </div>
+            <input type="hidden" id="moneyWhereTo" name="moneyWhereTo" th:value="${moneyWhereTo}">
+            <input type="hidden" id="moneyUser" name="moneyUser" th:value="${moneyUser}">
+            <input type="submit" class="btn" id="button" value="book now">
+        </form>
+
+    </div>
+
+</section>
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3>about me</h3>
+                <p>Hi everyone,I'm Hòa and 20-year old.I'm a developer</p>
+            </div>
+            <div class="box">
+                <h3>branch locations</h3>
+                <p>India</p>
+                <p>USA</p>
+                <p>Japan</p>
+                <p>France</p>
+                <p>Việt Nam</p>
+            </div>
+            <div class="box">
+                <h3>quick links</h3>
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/api/home#packages}">packages</a>
+                <a th:href="@{/api/home#services}">services</a>
+                <a th:href="@{/api/home#gallery}">gallery</a>
+                <a th:href="@{/api/home#review}">review</a>
+                <a th:href="@{/api/home#contact}">contact</a>
+            </div>
+            <div class="box">
+                <h3>Follow me</h3>
+                <a href="https://www.facebook.com/profile.php?id=61552792606499">facebook</a>
+                <a href="https://github.com/hoaiT2004">github</a>
+                <a href="https://www.youtube.com/channel/UCH35WVklVhJ3USrFCr9ea7w">youtube</a>
+            </div>
+        </div>
+
+        <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+
+    </section>
+<!-- book section ends -->
+<script>
+    function calculateTotalCost() {
+        // Get the values of the "money" and "guests" inputs
+        var moneyWhereTo = document.getElementById("moneyWhereTo").value;
+        var moneyUser = document.getElementById("moneyUser").value;
+        var guests = document.getElementById("guests").value;
+        var error = document.getElementById("error");
+        // Check if the inputs are valid numbers
+        if (moneyWhereTo*guests > moneyUser) {
+            error.innerHTML="Not enough money!";
+            document.getElementById("button").style.display = "none";
+        }else{
+            error.innerHTML="";
+            document.getElementById("button").style.display = "block";
+        }
+        document.getElementById("totalCost").innerHTML = "Total cost per person: " + moneyWhereTo*guests+"$";
+    }
+</script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+
+</body>
+</html>

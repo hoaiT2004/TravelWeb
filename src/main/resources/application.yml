@@ -1,0 +1,37 @@
+
+server:
+  port: 8080
+  error:
+    include-binding-errors: always
+spring:
+    datasource:
+      password: 24052004
+      url: 'jdbc:mysql://localhost:3306/TourWeb?createDatabaseIfNotExist=true'
+      username: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+          format_sql: true
+      show-sql: true
+    security:
+      oauth2:
+        client:
+          registration:
+            facebook:
+              client_id: 892311355668175
+              client-secret: 1c0b62b25f2f3e77ddc24e3e1012edad
+              scope:
+                - email
+                - public_profile
+            google:
+              client-id: 857525804098-ii92do9a7hbn1elv718qf3b7i7j7hsgt.apps.googleusercontent.com
+              client-secret: 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
+              scope:
+                - email
+                - profile
+jwt:
+  validity: 60

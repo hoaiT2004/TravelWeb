@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    form {
+        margin: 0 auto;
+        width: 400px;
+        border: 1px solid #ccc;
+        padding: 20px;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    input[type="text"], input[type="number"], input[type="url"] {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+    }
+    textarea {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+    }
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+            </nav>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <input type="search" id="search-bar" placeholder="tìm kiếm theo sản phẩm ,theo giá">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!--đã login-->
+        <div class="login-form-container">
+
+            <i class="fas fa-times" id="form-close2"></i>
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+<br><br><br><br><br>
+<form th:action="@{/admin/product/edit}" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <h1 style="text-align: center">Product Information</h1>
+        <label for="name">Name:</label><input type="text" disabled="disabled" id="name" name="name" required="required" th:value = "${name}"><br>
+        <label for="price">Price:($)</label><input th:value="${price}" type="number" id="price" name="price" step="1" required="required"><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" th:text="${description}" rows="3" cols="50" maxlength="30" required="required"></textarea><br>
+        <label for="imageUrl">Image File:</label>
+        <input type="file" id="imageUrl" accept=".jpg,.jpeg,.png" name="imageUrl" required="required"><br>
+        File Before:<h4 style="font-weight: normal" th:text="${imageUrl}"></h4>
+<!-- Old Information       -->
+        <input type="hidden" name = "name" th:value="${name}">
+        <input type="hidden" name = "oldPrice" th:value="${price}">
+        <input type="hidden" name = "oldDescription" th:value="${description}">
+        <input type="hidden" name = "oldImageUrl" th:value="${imageUrl}">
+<!--        -->
+    </fieldset>
+    <input type="submit" value="Add Product">
+</form>
+
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

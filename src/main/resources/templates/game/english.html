@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    fieldset {
+        border: 1px solid #ccc;
+        padding: 50px;
+        width: 400px;
+        height: 300px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+<!-- header section starts  -->
+<header>
+    <div id="menu-bar" class="fas fa-bars"></div>
+    <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+    <nav class="navbar">
+        <a th:href="@{/api/home}">home</a>
+        <a th:href="@{/api/home#package}">packages</a>
+        <a th:href="@{/api/home#services}">services</a>
+        <a th:href="@{/api/home#gallery}">gallery</a>
+        <a th:href="@{/api/home#review}">review</a>
+        <a th:href="@{/api/home#contact}">contact</a>
+        <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+    </nav>
+    <div class="icons">
+        <i class="fas fa-search" id="search-btn"></i>
+        <i class="fas fa-user" id="login-btn"></i>
+        <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+    </div>
+    <!--Filter -->
+    <form th:action="@{/api/search}" method="post" class="search-bar-container">
+        <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+            <option value="productName">Tên Sản phẩm</option>
+            <option value="price" >Giá</option>
+        </select>
+        <input type="search" id="search-bar" name="searchValue">
+        <label for="search-bar" class="fas fa-search"></label>
+    </form>
+    <!--End Filter -->
+</header>
+<!-- header section ends -->
+<div class="login-form-container">
+    <i class="fas fa-times" id="form-close2"></i>
+    <form action="">
+        <h3>tài khoản</h3>
+        <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+        <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+        <hr>
+        <p>home <a th:href="@{/api/home}">click here</a></p>
+    </form>
+</div>
+<!--Main -->
+<br><br><br><br><br><br>
+<form th:action="@{/user/game/checkResults}" method="post">
+    <div  th:each="g, iterStat : ${game.gameRequests}">
+        <h1 th:text="'Question ' + ${iterStat.count} + ': '"></h1><h1 style="text-align: center;" th:text="${g.question}"></h1>
+        <table>
+            <tr>
+                <td style="width: 100px">
+                </td>
+                <td style="width: 300px">
+                    <label for="a">A:</label>
+                    <input type="radio" id="a" th:name="|gameRequests[${iterStat.index}].answer|" value="A" /><span th:text="${g.ansA}"></span>
+                </td>
+                <td style="width: 300px">
+                    <label for="b">B:</label>
+                    <input type="radio" id="b" th:name="|gameRequests[${iterStat.index}].answer|" value="B" /><span th:text="${g.ansB}"></span>
+                </td>
+                <td style="width: 300px">
+                    <label for="c">C:</label>
+                    <input type="radio" id="c" th:name="|gameRequests[${iterStat.index}].answer|" value="C"/><span th:text="${g.ansC}"></span>
+                </td>
+                <td style="width: 300px">
+                    <label for="d">D:</label>
+                    <input type="radio" id="d" th:name="|gameRequests[${iterStat.index}].answer|" value="D"/><span th:text="${g.ansD}"></span>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <input type="hidden" th:name="|gameRequests[${iterStat.index}].answerRight|" th:value = "${g.answerRight}">
+        <input type="hidden" th:name="|gameRequests[${iterStat.index}].receiveMoney|" th:value = "${g.receiveMoney}">
+    </div>
+    <input type="submit" value="Submit">
+</form>
+<!--</div>-->
+<!--End Main-->
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

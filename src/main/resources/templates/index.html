@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a href="#home" class="logo"><span>T</span>ravel</a>
+        <div th:if="${role != 'ADMIN'}">
+            <nav class="navbar">
+                <a href="#home">home</a>
+                <a href="#packages">packages</a>
+                <a href="#services">services</a>
+                <a href="#gallery">gallery</a>
+                <a href="#review">review</a>
+                <a href="#contact">contact</a>
+                <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+            </nav>
+        </div>
+        <div th:if="${role == 'ADMIN'}">
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+
+            </nav>
+        </div>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+                    <option value="productName">Tên Sản phẩm</option>
+                    <option value="price" >Giá</option>
+                </select>
+                <input type="search" id="search-bar" name="searchValue">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!-- header section ends -->
+        <!-- login form container  -->
+        <!--chưa login-->
+        <div class="login-form-container" th:if="${username==null}">
+
+            <i class="fas fa-times" id="form-close"></i>
+            <form action="">
+                <h3>options</h3>
+                <p>login <a th:href="@{/user/login}">click here</a></p>
+                <p>forget password? <a th:href="@{/user/getPassword}">click here</a></p>
+                <p>don't have and account? <a th:href="@{/user/register}">register now</a></p>
+                <hr>
+                <p>home <a th:href="@{/api/home}">click here</a></p>
+            </form>
+
+        </div>
+        <!--đã login-->
+        <div class="login-form-container" th:if="${username!=null}">
+
+            <i class="fas fa-times" id="form-close2"></i>
+            <div th:if="${role != 'ADMIN'}">
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>Tiền: <span th:text="${money}"></span></p>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>lịch sử giao dịch <a th:href="@{/api/book/show}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+            <div th:if="${role == 'ADMIN'}">
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+        </div>
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+    <div class="content">
+        <h3>adventure is worthwhile</h3>
+        <p>discover new places with us, adventure awaits</p>
+        <a href="#packages" class="btn">discover more</a>
+    </div>
+
+    <div class="controls">
+        <span class="vid-btn active" data-src="/images/vid-1.mp4"></span>
+        <span class="vid-btn" data-src="/images/vid-2.mp4"></span>
+        <span class="vid-btn" data-src="/images/vid-3.mp4"></span>
+        <span class="vid-btn" data-src="/images/vid-4.mp4"></span>
+        <span class="vid-btn" data-src="/images/vid-5.mp4"></span>
+    </div>
+
+    <div class="video-container">
+        <video src="/images/vid-1.mp4" id="video-slider" loop autoplay muted></video>
+    </div>
+
+</section>
+
+<!-- home section ends -->
+
+<!-- packages section starts  -->
+
+<section class="packages" id="packages">
+
+    <h1 class="heading">
+        <span>p</span>
+        <span>a</span>
+        <span>c</span>
+        <span>k</span>
+        <span>a</span>
+        <span>g</span>
+        <span>e</span>
+        <span>s</span>
+    </h1>
+
+    <div class="box-container">
+            <div th:each="product : ${products}">
+                <div class="box" style="height: 530px;width: 485px">
+                    <img th:src="@{${product.imageUrl}}" style="width: 100%;align-items: center;justify-items: center;" alt="">
+                    <div class="content">
+                        <h3> <i class="fas fa-map-marker-alt"></i> <span th:text="${product.name}"></span> </h3>
+                        <p th:text="${product.description}" style="max-width: 350px;" class="product-description"></p>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <h3 style="font-weight: normal"> $<span th:text="${product.price}"></span>  </h3>
+                        <a th:href="@{'/api/book?where='+${product.name}+'&money='+${money}}" class="btn">book now</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+</section>
+<!-- packages section ends -->
+<!-- services section starts  -->
+<section class="services" id="services">
+
+    <h1 class="heading">
+        <span>s</span>
+        <span>e</span>
+        <span>r</span>
+        <span>v</span>
+        <span>i</span>
+        <span>c</span>
+        <span>e</span>
+        <span>s</span>
+    </h1>
+
+    <div class="box-container">
+
+        <div class="box">
+            <i class="fas fa-hotel"></i>
+            <h3>affordable hotels</h3>
+            <p> Giá rẻ - Chất lượng đảm bảo</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-utensils"></i>
+            <h3>food and drinks</h3>
+            <p> Chất lượng - An toàn</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-bullhorn"></i>
+            <h3>safety guide</h3>
+            <p> Hướng dẫn tận tâm - lời khuyên hữu ích</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-globe-asia"></i>
+            <h3>around the world</h3>
+            <p> Khám phá thế giới</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-plane"></i>
+            <h3>fastest travel</h3>
+            <p> Tiết kiệm thời gian - chi phí</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-hiking"></i>
+            <h3>adventures</h3>
+            <p>Cuộc phiêu lưu đa dạng - hấp dẫn</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- services section ends -->
+
+<!-- gallery section starts  -->
+
+<section class="gallery" id="gallery">
+
+    <h1 class="heading">
+        <span>g</span>
+        <span>a</span>
+        <span>l</span>
+        <span>l</span>
+        <span>e</span>
+        <span>r</span>
+        <span>y</span>
+    </h1>
+
+    <div class="box-container">
+
+        <div class="box">
+            <img src="/images/g-1.jpg" alt="">
+            <div class="content">
+                <h3>Hawaii</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-2.jpg" alt="">
+            <div class="content">
+                <h3>Maldives</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-3.jpg" alt="">
+            <div class="content">
+                <h3>Angkor Wat</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-4.jpg" alt="">
+            <div class="content">
+                <h3>Việt Nam</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-5.jpg" alt="">
+            <div class="content">
+                <h3>Pisa</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-6.jpg" alt="">
+            <div class="content">
+                <h3>Rio de Janeiro</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-7.jpg" alt="">
+            <div class="content">
+                <h3>Cappadocia</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-8.jpg" alt="">
+            <div class="content">
+                <h3>Tam Đảo</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="/images/g-9.jpg" alt="">
+            <div class="content">
+                <h3>Ai Cập</h3>
+                <a href="#home" class="btn">see more</a>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- gallery section ends -->
+
+<!-- review section starts  -->
+
+<section class="review" id="review">
+
+    <h1 class="heading">
+        <span>r</span>
+        <span>e</span>
+        <span>v</span>
+        <span>i</span>
+        <span>e</span>
+        <span>w</span>
+    </h1>
+
+        <div class="swiper-container review-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="box" style="width: 100%;">
+                            <img src="/images/pic1.png" alt="">
+                            <h3>Jenny</h3>
+                            <p style="text-align: center;">The tour guide was very friendly and knowledgeable.
+                                I would highly recommend it to anyone looking for
+                                a memorable and enjoyable travel experience.</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                    </div>
+                    <div class="box" style="width: 100%">
+                            <img src="/images/pic2.png" alt="">
+                            <h3>Jack</h3>
+                            <p style="text-align: left">They arranged everything for me, from flights and hotels to car rentals and activities.
+                                The customer service was excellent.
+                                I will definitely book with Hawaii again for my next vacation.
+                            </p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                    </div>
+                    <div class="box" style="width: 100%;">
+                            <img src="/images/pic3.png" alt="">
+                            <h3>Richalison</h3>
+                            <p style="text-align: center">Thanks Hòa,Everything was perfect, from the accommodation and transportation to the tours and
+                                attractions. I can’t wait to travel with Tokyo again.</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="box" style="width: 100%;">
+                            <img src="/images/pic4.png" alt="">
+                            <h3>Holo</h3>
+                            <p style="text-align: center">I have used them several times for my trips to Paris and I have always been satisfied.
+                                and I would strongly recommend it to anyone who wants to travel to Paris.</p>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+<!-- review section ends -->
+
+<!-- contact section starts  -->
+
+<section class="contact" id="contact">
+
+    <h1 class="heading">
+        <span>c</span>
+        <span>o</span>
+        <span>n</span>
+        <span>t</span>
+        <span>a</span>
+        <span>c</span>
+        <span>t</span>
+    </h1>
+
+    <div class="row">
+
+        <div class="image">
+            <img src="/images/contact-img.svg" alt="">
+        </div>
+
+        <form th:action="@{/user/sendMessage}" method="post">
+            <span id="inform" style="color: red;text-align: center"></span>
+            <div class="inputBox">
+                <input type="text" placeholder="name" pattern="[0-9]*" onchange="checkTel()">
+                <input type="email" placeholder="email">
+            </div>
+            <div class="inputBox">
+                <input type="tel" id="tel" placeholder="telephone">
+                <input type="text" placeholder="subject">
+            </div>
+            <textarea placeholder="message" name="" id="" cols="30" rows="10"></textarea>
+            <input type="submit" id="submit" class="btn" value="send message">
+        </form>
+
+    </div>
+
+</section>
+
+<!-- contact section ends -->
+
+<!-- brand section  -->
+<section class="brand-container">
+
+    <div class="swiper-container brand-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="/images/1.jpg" alt=""></div>
+            <div class="swiper-slide"><img src="/images/2.jpg" alt=""></div>
+            <div class="swiper-slide"><img src="/images/3.jpg" alt=""></div>
+            <div class="swiper-slide"><img src="/images/4.jpg" alt=""></div>
+            <div class="swiper-slide"><img src="/images/5.jpg" alt=""></div>
+            <div class="swiper-slide"><img src="/images/6.jpg" alt=""></div>
+        </div>
+    </div>
+
+</section>
+
+<!-- footer section  -->
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>about me</h3>
+            <p>Hi everyone,I'm Hòa and 20-year old.I'm a developer</p>
+        </div>
+        <div class="box">
+            <h3>branch locations</h3>
+            <p>India</p>
+            <p>USA</p>
+            <p>Japan</p>
+            <p>France</p>
+            <p>Việt Nam</p>
+        </div>
+        <div class="box">
+            <h3>quick links</h3>
+            <a href="#home">home</a>
+            <a href="#packages">packages</a>
+            <a href="#services">services</a>
+            <a href="#gallery">gallery</a>
+            <a href="#review">review</a>
+            <a href="#contact">contact</a>
+        </div>
+        <div class="box">
+            <h3>Follow me</h3>
+            <a href="https://www.facebook.com/profile.php?id=61552792606499">facebook</a>
+            <a href="https://github.com/hoaiT2004">github</a>
+            <a href="https://www.youtube.com/channel/UCH35WVklVhJ3USrFCr9ea7w">youtube</a>
+        </div>
+    </div>
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script type="text/javascript">
+    function checkTel(){
+        let tel = document.getElementById("tel");
+        let ok = 0;
+        for(let i = 0;i < tel.value.length;i++){
+            if(tel.value[i] >= 0 && tel.value[i] <= 9){
+
+            }else ok = 1;
+        }
+        if(ok){
+            document.getElementById("inform").innerHTML = "The phone number must be numberic.";
+            document.getElementById("submit").style.display = "none";
+        }else{
+            if(tel.value.length === 10 || tel.value.length === 12){
+                document.getElementById("inform").innerHTML = "";
+                document.getElementById("submit").style.display = "block";
+            }else{
+                document.getElementById("inform").innerHTML = "The length of the phone number must be 10 or 12.";
+                document.getElementById("submit").style.display = "none";
+            }
+        }
+
+    }
+</script>
+<script src="/script.js"></script>
+</body>
+</html>

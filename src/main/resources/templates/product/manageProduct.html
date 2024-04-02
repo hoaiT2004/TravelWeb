@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+            </nav>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <input type="search" id="search-bar" placeholder="tìm kiếm theo sản phẩm ,theo giá">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!--đã login-->
+        <div class="login-form-container">
+
+            <i class="fas fa-times" id="form-close2"></i>
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+<br><br><br><br><br><br><br>
+<form action="">
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 45px;"></th>
+            <th style="color: rgb(128,128,128); width: 50px;">STT</th>
+            <th style="color: rgb(128,128,128); width: 100px;">ImageUrl</th>
+            <th style="color: rgb(128,128,128); width: 150px;">Name</th>
+            <th style="color: rgb(128,128,128); width: 300px;">Description</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Price</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Edit</th>
+            <th style="color: rgb(128,128,128); width: 100px;">Delete</th>
+        </tr>
+        </thead>
+        <tbody th:each="product, iterStat : ${products}">
+        <tr>
+            <td style="width: 45px;"></td>
+            <td style="width: 50px;text-align: center" th:text="${iterStat.count}"></td>
+            <td style="width: 100px;"><img th:src="@{${product.imageUrl}}" style="width: 100px;height: 50px;align-items: center;justify-items: center;" alt=""></td>
+            <td style="width: 150px;text-align: center" th:text="${product.name}"></td>
+            <td th:text="${product.description}" style="width: 300px;"></td>
+            <td style="width: 100px;text-align: center" th:text="${product.price}"></td>
+            <td style="width: 100px;text-align: center">
+                <a th:href="@{'/admin/product/edit?name='+${product.name}}">Edit</a>
+            </td>
+            <td style="width: 100px;text-align: center;">
+                <a th:href="@{'/admin/product/delete?name='+${product.name}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

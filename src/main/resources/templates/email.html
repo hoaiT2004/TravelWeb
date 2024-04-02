@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thay đổi email</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    #sidebar {
+        width: 200px;
+        background-color: #f2f2f2;
+    }
+
+
+    #sidebar nav {
+        height: 100%;
+    }
+
+    #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #sidebar li {
+        margin-bottom: 8px;
+    }
+
+    #sidebar a {
+        display: block;
+        padding: 8px;
+        background-color: #ddd;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #sidebar a:hover {
+        background-color: #eee;
+    }
+
+    #ads img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        margin-bottom: 8px;
+    }
+
+    #social-media h3 {
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    #social-media ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    #social-media li {
+        margin: 0 8px;
+    }
+
+    #social-media a {
+        display: block;
+        padding: 8px;
+        background-color: #ddd;
+        text-decoration: none;
+        color: #333;
+    }
+
+    #social-media a:hover {
+        background-color: #eee;
+    }
+    #container {
+        display: flex;
+        height: 100%;
+    }
+
+    #sidebar {
+        width: 200px;
+        background-color: #f2f2f2;
+    }
+
+    #profile {
+        flex: 1;
+        padding: 16px;
+        box-sizing: border-box;
+        background-color: #f2f2f2;
+    }
+
+    #profile-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #profile-form label {
+        margin-bottom: 8px;
+    }
+
+    #profile-form input,
+    #profile-form select {
+        margin-bottom: 30px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-image {
+        width: 100px; /* Adjust the width as needed */
+        height: 100px; /* Adjust the height as needed */
+        border-radius: 50%; /* Make the image circular */
+        object-fit: cover; /* Ensure the image fits the box */
+        margin-right: 10px; /* Add some spacing between the image and text */
+    }
+
+    .user-text {
+        align-self: center;
+        font-weight: unset;
+    }
+    .highlight {
+        background-color: #f0f0f0; /* Light gray background */
+        padding: 2px 5px; /* Add some padding around the text */
+        margin: 0 5px; /* Add some space around the text */
+        font-weight: normal;
+    }
+
+</style>
+<body>
+<br><br><br><br><br><br><br><br>
+<header>
+    <div id="menu-bar" class="fas fa-bars"></div>
+    <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+    <div th:if="${mainUsername != 'admin'}">
+        <nav class="navbar">
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/api/home#packages}">packages</a>
+            <a th:href="@{/api/home#services}">services</a>
+            <a th:href="@{/api/home#gallery}">gallery</a>
+            <a th:href="@{/api/home#review}">review</a>
+            <a th:href="@{/api/home#contact}">contact</a>
+            <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
+        </nav>
+    </div>
+    <div th:if="${mainUsername == 'admin'}">
+        <nav class="navbar">
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/admin/product/add}">add product</a>
+            <a th:href="@{/admin/game/add}">add game</a>
+            <a th:href="@{/admin/game/manage}">game</a>
+            <a th:href="@{/admin/product/manage}">product</a>
+            <a th:href="@{/admin/account/manage}">account</a>
+            <a th:href="@{/admin/order/manage}">order</a>
+        </nav>
+    </div>
+    <div class="icons">
+        <i class="fas fa-search" id="search-btn"></i>
+        <i class="fas fa-user" id="login-btn"></i>
+        <span th:if="${mainUsername!=null}" th:text="${mainUsername}" style="color: white;"></span>
+    </div>
+    <!--Filter -->
+    <form th:action="@{/api/search}" method="post" class="search-bar-container">
+        <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+            <option value="productName">Tên Sản phẩm</option>
+            <option value="price" >Giá</option>
+        </select>
+        <input type="search" id="search-bar" name="searchValue">
+        <label for="search-bar" class="fas fa-search"></label>
+    </form>
+    <!--End Filter -->
+</header>
+<!-- header section ends -->
+<!-- login form container  -->
+<!--chưa login-->
+<div class="login-form-container" th:if="${mainUsername==null}">
+
+    <i class="fas fa-times" id="form-close"></i>
+    <form action="">
+        <h3>options</h3>
+        <p>login <a th:href="@{/user/login}">click here</a></p>
+        <p>forget password? <a th:href="@{/user/getPassword}">click here</a></p>
+        <p>don't have and account? <a th:href="@{/user/register}">register now</a></p>
+        <hr>
+        <p>home <a th:href="@{/api/home}">click here</a></p>
+    </form>
+
+</div>
+<!--đã login-->
+<div class="login-form-container" th:if="${mainUsername!=null}">
+
+    <i class="fas fa-times" id="form-close2"></i>
+    <div th:if="${mainUsername != 'admin'}">
+        <form action="">
+            <h3>tài khoản</h3>
+            <p>Tiền: <span th:text="${money}"></span></p>
+            <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+            <p>lịch sử giao dịch <a href="">click here</a></p>
+            <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+            <hr>
+            <p>home <a th:href="@{/api/home}">click here</a></p>
+        </form>
+    </div>
+    <div th:if="${mainUsername == 'admin'}">
+        <form action="">
+            <h3>tài khoản</h3>
+            <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+            <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+            <hr>
+            <p>home <a th:href="@{/api/home}">click here</a></p>
+        </form>
+    </div>
+</div>
+
+
+<div id="container">
+    <aside id="sidebar">
+        <div class="user-info">
+            <img th:src="${linkAvatar}" alt="User Image" class="user-image">
+            <h3 class="user-text" th:text="${username}"></h3>
+        </div>
+        <hr>
+        <nav>
+            <h4 class = "highlight">Tiền:<span th:text="${money}">$</span></h4>
+            <ul>
+                <li><a href="#">Kiếm xu</a></li>
+                <li><a href="#">Thay đổi mật khẩu</a></li>
+                <li><a href="#">Đơn hàng của tôi</a></li>
+                <hr>
+                <li><a th:href="@{/user/logout}">Đăng xuất</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <section id="profile">
+        <div style="text-align: left">
+            <h1 style="font-weight: bolder;">Thay đổi địa chỉ email</h1>
+            <hr>
+        </div>
+        <br>
+        <br><hr>
+        <form id="profile-form" th:action="@{/user/sendEmail}" method="get">
+            <input name="username" th:value="${username}" type="hidden">
+            <label style="font-weight: normal" for="email">Địa chỉ email mới:</label><input id="email" type="email" required="required" name = "email" placeholder="Nhập địa chỉ email của bạn">
+            <input style="background-color: red;border-color: white;color: white;width: 10%;height: 30px" type="submit" value="Tiếp theo">
+        </form>
+    </section>
+</div>
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>about me</h3>
+            <p>Hi everyone,I'm Hòa and 20-year old.I'm a developer</p>
+        </div>
+        <div class="box">
+            <h3>branch locations</h3>
+            <p>India</p>
+            <p>USA</p>
+            <p>Japan</p>
+            <p>France</p>
+            <p>Việt Nam</p>
+        </div>
+        <div class="box">
+            <h3>quick links</h3>
+            <a th:href="@{/api/home}">home</a>
+            <a th:href="@{/api/home#packages}">packages</a>
+            <a th:href="@{/api/home#services}">services</a>
+            <a th:href="@{/api/home#gallery}">gallery</a>
+            <a th:href="@{/api/home#review}">review</a>
+            <a th:href="@{/api/home#contact}">contact</a>
+        </div>
+        <div class="box">
+            <h3>Follow me</h3>
+            <a href="https://www.facebook.com/profile.php?id=61552792606499">facebook</a>
+            <a href="https://github.com/hoaiT2004">github</a>
+            <a href="https://www.youtube.com/channel/UCH35WVklVhJ3USrFCr9ea7w">youtube</a>
+        </div>
+    </div>
+
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+
+</section>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

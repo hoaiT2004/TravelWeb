@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhập mã xác thực</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    .highlight {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        margin: 0 5px;
+        font-weight: normal;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10vh;
+    }
+    #button{
+        background-color: red;
+        text-align: center;
+        color: white;
+        visibility: hidden;
+        width: 25%;
+        height: 30px;
+    }
+    fieldset {
+        border: 1px solid #ccc;
+        padding: 50px;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+</style>
+<body>
+<br><br><br><br><br>
+<fieldset>
+    <form th:action="@{/user/verify}" method="post">
+        <h1 style="text-align: center;">Nhập mã xác nhận</h1>
+        <h4 th:if="${error != null}" th:text="${error}" style="text-align: center;color: red;"></h4>
+        <br>
+        <h4 style="text-align: center;">Mã xác minh đã được gửi đến Email</h4>
+        <h2 style="text-align: center;" th:text="${email}"></h2>
+        <br>
+        <div style="text-align: center;">
+            <label for="box" style="text-align: center;">Mã xác thực:</label>
+            <input type="text" id="box" class="box" name="code" oninput="checkVerifyCode()" placeholder="Mã xác thực">
+        </div>
+        <input type="hidden" name="codeTrue" th:value = "${codeTrue}">
+        <input type="hidden" name="sendCodeDateTime" th:value = "${time}">
+        <input type="hidden" name="email" th:value = "${email}">
+        <br>
+        <div style="text-align: center;">
+            <span>Bạn vẫn chưa nhận được?</span><a class="highlight" th:href="@{'/user/sendEmail?email='+${email}}">Gửi lại</a>
+        </div>
+        <div class="container">
+            <input type="submit" value="Kế tiếp" id="button">
+        </div>
+    </form>
+</fieldset>
+<script>
+    function checkVerifyCode() {
+        let code = document.getElementById("box");
+        if (code.value.length === 6) {
+            document.getElementById("button").style.visibility = "visible";
+        } else {
+            document.getElementById("button").style.visibility = "hidden";
+        }
+    }
+</script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

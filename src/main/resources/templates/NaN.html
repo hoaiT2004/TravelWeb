@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận mật khẩu</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    .highlight {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        margin: 0 5px;
+        font-weight: normal;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10vh;
+    }
+    #button{
+        background-color: red;
+        text-align: center;
+        color: white;
+        width: 50%;
+        height: 30px;
+    }
+    fieldset {
+        border: 1px solid #ccc;
+        padding: 50px;
+        width: 500px;
+        height: 350px;
+        margin: 0 auto;
+    }
+
+</style>
+<body>
+<br><br><br><br><br>
+<fieldset>
+    <form th:action="@{/user/login}" method="get">
+        <h1 style="text-align: center;">Mật khẩu đã được gửi đến Email</h1>
+        <h2 style="text-align: center;" th:text="${email}"></h2>
+        <br>
+        <div style="text-align: center;">
+            <span>Bạn vẫn chưa nhận được?</span><a class="highlight" th:href="@{'/user/sendPasswordViaEmail?email='+${email}+'&username='+${username}}">Gửi lại</a>
+        </div>
+        <div class="container">
+            <input type="submit" value="Quay về trang login" id="button">
+        </div>
+    </form>
+</fieldset>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>

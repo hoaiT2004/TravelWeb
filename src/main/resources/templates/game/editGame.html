@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<style>
+    form {
+        margin: 0 auto;
+        width: 400px;
+        border: 1px solid #ccc;
+        padding: 20px;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    input[type="text"], input[type="number"], input[type="url"] {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+    }
+    textarea {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+    }
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+<body>
+<!-- header section starts  -->
+    <header>
+        <div id="menu-bar" class="fas fa-bars"></div>
+        <a th:href="@{/api/home}" class="logo"><span>T</span>ravel</a>
+            <nav class="navbar">
+                <a th:href="@{/api/home}">home</a>
+                <a th:href="@{/admin/product/add}">add product</a>
+                <a th:href="@{/admin/game/add}">add game</a>
+                <a th:href="@{/admin/game/manage}">game</a>
+                <a th:href="@{/admin/product/manage}">product</a>
+                <a th:href="@{/admin/account/manage}">account</a>
+                <a th:href="@{/admin/order/manage}">order</a>
+            </nav>
+            <div class="icons">
+                <i class="fas fa-search" id="search-btn"></i>
+                <i class="fas fa-user" id="login-btn"></i>
+                <span th:if="${username!=null}" th:text="${username}" style="color: white;"></span>
+            </div>
+            <!--Filter -->
+            <form th:action="@{/api/search}" method="post" class="search-bar-container">
+                <select style="height: 38px;background-color: blue;color: white" required="required" name="option">
+                    <option value="productName">Tên Sản phẩm</option>
+                    <option value="price" >Giá</option>
+                </select>
+                <input type="search" id="search-bar" name="searchValue">
+                <label for="search-bar" class="fas fa-search"></label>
+            </form>
+            <!--End Filter -->
+        </header>
+        <!--đã login-->
+        <div class="login-form-container">
+
+            <i class="fas fa-times" id="form-close2"></i>
+                <form action="">
+                    <h3>tài khoản</h3>
+                    <p>thông tin cá nhân <a th:href="@{/user/profile}">click here</a></p>
+                    <p>đăng xuất <a th:href="@{/user/logout}">click here</a></p>
+                    <hr>
+                    <p>home <a th:href="@{/api/home}">click here</a></p>
+                </form>
+            </div>
+<br><br><br><br><br>
+<form th:action="@{/admin/game/edit}" method="post">
+    <fieldset>
+        <h1 style="text-align: center">Game Information</h1>
+        <label for="question">Question:</label><input type="text" disabled="disabled" id="question" name="question" required="required" th:value = "${game.question}"><br>
+        <label for="category">Category:</label>
+        <select id="category" name="category" required="required">
+            <option value="math" th:selected="${game.category=='math'}">Toán</option>
+            <option value="chemistry" th:selected="${game.category=='chemistry'}">Hóa</option>
+            <option value="english" th:selected="${game.category=='english'}">Anh</option>
+        </select>
+        <label for="ansA">Answer A:</label><input th:value="${game.ansA}" type="text" id="ansA" name="ansA" required="required"><br>
+        <label for="ansB">Answer B:</label><input type="text" th:value="${game.ansB}" id="ansB" name="ansB" required="required"><br>
+        <label for="ansC">Answer C:</label><input type="text" th:value="${game.ansC}" id="ansC" name="ansC" required="required"><br>
+        <label for="ansD">Answer D:</label><input type="text" th:value="${game.ansD}" id="ansD" name="ansD" required="required"><br>
+        <label for="answerRight">Answer:</label>
+        <select id="answerRight" name="answerRight" required="required">
+            <option value="A" th:selected="${game.answerRight=='A'}">A</option>
+            <option value="B" th:selected="${game.answerRight=='B'}">B</option>
+            <option value="C" th:selected="${game.answerRight=='C'}">C</option>
+            <option value="D" th:selected="${game.answerRight=='D'}">D</option>
+        </select>
+        <label for="receiveMoney">Receive Money:</label><input type="number" id="receiveMoney" name="receiveMoney" th:value="${game.receiveMoney}" required="required"><br>
+        <!-- Old Information       -->
+        <input type="hidden" name = "question" th:value="${game.question}">
+        <input type="hidden" name = "encodeQuestion" th:value="${game.encodeQuestion}">
+        <input type="hidden" name = "categoryOld" th:value="${game.category}">
+        <input type="hidden" name = "ansAOld" th:value="${game.ansA}">
+        <input type="hidden" name = "ansBOld" th:value="${game.ansB}">
+        <input type="hidden" name = "ansCOld" th:value="${game.ansC}">
+        <input type="hidden" name = "ansDOld" th:value="${game.ansD}">
+        <input type="hidden" name = "answerRightOld" th:value="${game.answerRight}">
+<!--        -->
+    </fieldset>
+    <input type="submit" value="Save">
+</form>
+
+<!-- footer section  -->
+<section class="footer">
+    <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
+</section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="/script.js"></script>
+</body>
+</html>
