@@ -591,30 +591,6 @@
     <h1 class="credit"> created by <span> mr.Hòa (2004) web designer </span> | all rights reserved! </h1>
 
 </section>
-<script type="text/javascript">
-    function checkTel(){
-        let tel = document.getElementById("tel");
-        let ok = 0;
-        for(let i = 0;i < tel.value.length;i++){
-            if(tel.value[i] >= 0 && tel.value[i] <= 9){
-
-            }else ok = 1;
-        }
-        if(ok){
-            document.getElementById("inform").innerHTML = "The phone number must be numberic.";
-            document.getElementById("submitInfo").style.display = "none";
-        }else{
-            if(tel.value.length === 10 || tel.value.length === 12){
-                document.getElementById("inform").innerHTML = "";
-                document.getElementById("submitInfo").style.display = "block";
-            }else{
-                document.getElementById("inform").innerHTML = "The length of the phone number must be 10 or 12.";
-                document.getElementById("submitInfo").style.display = "none";
-            }
-        }
-
-    }
-</script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <!-- custom js file link  -->
 <script src="/script.js"></script>

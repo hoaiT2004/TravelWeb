@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -60,6 +61,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/home","/api/search","/user/getPassword","/user/sendPasswordViaEmail","/user/register","/user/login")
                 .permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                //.requestMatchers(HttpMethod.GET, "/static/*")
                 .permitAll()
                 .requestMatchers("/admin/*").hasAuthority("ADMIN")
                 .anyRequest()

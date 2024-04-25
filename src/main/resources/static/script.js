@@ -10,6 +10,29 @@ let menu = document.querySelector('#menu-bar');
 let navbar = document.querySelector('.navbar');
 let videoBtn = document.querySelectorAll('.vid-btn');
 
+function checkTel(){
+    let tel = document.getElementById("tel");
+    let ok = 0;
+    for(let i = 0;i < tel.value.length;i++){
+        if(tel.value[i] >= 0 && tel.value[i] <= 9){
+
+        }else ok = 1;
+    }
+    if(ok){
+        document.getElementById("inform").innerHTML = "The phone number must be numberic.";
+        document.getElementById("submit").style.display = "none";
+    }else{
+        if(tel.value.length === 10 || tel.value.length === 12){
+            document.getElementById("inform").innerHTML = "";
+            document.getElementById("submit").style.display = "block";
+        }else{
+            document.getElementById("inform").innerHTML = "The length of the phone number must be 10 or 12.";
+            document.getElementById("submit").style.display = "none";
+        }
+    }
+
+}
+
 window.onscroll = () =>{
     searchBtn.classList.remove('fa-times');
     searchBar.classList.remove('active');

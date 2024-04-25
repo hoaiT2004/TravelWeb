@@ -33,5 +33,6 @@ spring:
               scope:
                 - email
                 - profile
-jwt:
-  validity: 60
+    jwt:
+      validity: 60
+
