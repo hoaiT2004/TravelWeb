@@ -66,7 +66,7 @@ public class ProductController {
         if(price == productRequest.getPrice()
                 && description.equalsIgnoreCase(productRequest.getDescription()) && imageUrl.equalsIgnoreCase(file.getOriginalFilename())) {
         }else
-            productService.updateProduct(productRequest,file,imageUrl);
+            productService.updateProduct(productRequest,file);
         return "redirect:/admin/product/manage";
     }
 

@@ -2,6 +2,7 @@ package com.example.tourweb.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Indexed;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -17,11 +18,8 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
     @Id
-    @NonNull
     private String username;
-    @NonNull
     private String password;
-    @NonNull
     private String email;
     private String fullName;
     private String tel;

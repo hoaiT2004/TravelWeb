@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
@@ -28,10 +29,9 @@ public class ProductService {
         return productRepository.findById(name).orElse(null);
     }
 
-    public void updateProduct(ProductRequest productRequest,MultipartFile file,String imageUrl){
-        String inform = fileService.updateImageUrlProduct(file,imageUrl);
-        if(inform.equals("same")) productRepository.updateProduct(productRequest.getDescription(), "/images/"+imageUrl, productRequest.getPrice(), productRequest.getName());
-        else if(inform.equals("success")) productRepository.updateProduct(productRequest.getDescription(), "/images/"+file.getOriginalFilename(), productRequest.getPrice(), productRequest.getName());
+    public void updateProduct(ProductRequest productRequest,MultipartFile file){
+        String url = this.fileService.upload(file);
+        productRepository.updateProduct(productRequest.getDescription(),url , productRequest.getPrice(), productRequest.getName());
     }
 
     public void deleteProduct(String name){
@@ -43,12 +43,11 @@ public class ProductService {
         if(product != null){
             return "Sản phẩm đã tồn tại!";
         }
-        String inform = fileService.addImageUrlProduct(file);
-        if(!inform.equals("success")) return inform;
+        String url = this.fileService.upload(file);
         var addProduct = Product.builder()
                         .name(productRequest.getName())
                         .description(productRequest.getDescription())
-                        .imageUrl("/images/"+file.getOriginalFilename())
+                        .imageUrl(url)
                         .price(productRequest.getPrice())
                         .build();
         productRepository.save(addProduct);

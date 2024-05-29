@@ -714,7 +714,6 @@
                 <a href="#packages">packages</a>
                 <a href="#services">services</a>
                 <a href="#gallery">gallery</a>
-                <a href="#review">review</a>
                 <a href="#contact">contact</a>
                 <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
             </nav>
@@ -722,8 +721,6 @@
         <div th:if="${role == 'ADMIN'}">
             <nav class="navbar">
                 <a th:href="@{/api/home}">home</a>
-                <a th:href="@{/admin/product/add}">add product</a>
-                <a th:href="@{/admin/game/add}">add game</a>
                 <a th:href="@{/admin/game/manage}">game</a>
                 <a th:href="@{/admin/product/manage}">product</a>
                 <a th:href="@{/admin/account/manage}">account</a>
@@ -985,85 +982,6 @@
 </section>
 
 <!-- gallery section ends -->
-
-<!-- review section starts  -->
-
-<section class="review" id="review">
-
-    <h1 class="heading">
-        <span>r</span>
-        <span>e</span>
-        <span>v</span>
-        <span>i</span>
-        <span>e</span>
-        <span>w</span>
-    </h1>
-
-        <div class="swiper-container review-slider">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="box" style="width: 100%;">
-                            <img src="/images/pic1.png" alt="">
-                            <h3>Jenny</h3>
-                            <p style="text-align: center;">The tour guide was very friendly and knowledgeable.
-                                I would highly recommend it to anyone looking for
-                                a memorable and enjoyable travel experience.</p>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                    </div>
-                    <div class="box" style="width: 100%">
-                            <img src="/images/pic2.png" alt="">
-                            <h3>Jack</h3>
-                            <p style="text-align: left">They arranged everything for me, from flights and hotels to car rentals and activities.
-                                The customer service was excellent.
-                                I will definitely book with Hawaii again for my next vacation.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                    </div>
-                    <div class="box" style="width: 100%;">
-                            <img src="/images/pic3.png" alt="">
-                            <h3>Richalison</h3>
-                            <p style="text-align: center">Thanks Hòa,Everything was perfect, from the accommodation and transportation to the tours and
-                                attractions. I can’t wait to travel with Tokyo again.</p>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="box" style="width: 100%;">
-                            <img src="/images/pic4.png" alt="">
-                            <h3>Holo</h3>
-                            <p style="text-align: center">I have used them several times for my trips to Paris and I have always been satisfied.
-                                and I would strongly recommend it to anyone who wants to travel to Paris.</p>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-</section>
-
-<!-- review section ends -->
-
 <!-- contact section starts  -->
 
 <section class="contact" id="contact">
@@ -1144,7 +1062,6 @@
             <a href="#packages">packages</a>
             <a href="#services">services</a>
             <a href="#gallery">gallery</a>
-            <a href="#review">review</a>
             <a href="#contact">contact</a>
         </div>
         <div class="box">

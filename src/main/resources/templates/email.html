@@ -149,7 +149,6 @@
             <a th:href="@{/api/home#packages}">packages</a>
             <a th:href="@{/api/home#services}">services</a>
             <a th:href="@{/api/home#gallery}">gallery</a>
-            <a th:href="@{/api/home#review}">review</a>
             <a th:href="@{/api/home#contact}">contact</a>
             <a th:href="@{/user/game}" th:if="${username!=null}">earn money</a>
         </nav>
@@ -157,8 +156,6 @@
     <div th:if="${mainUsername == 'admin'}">
         <nav class="navbar">
             <a th:href="@{/api/home}">home</a>
-            <a th:href="@{/admin/product/add}">add product</a>
-            <a th:href="@{/admin/game/add}">add game</a>
             <a th:href="@{/admin/game/manage}">game</a>
             <a th:href="@{/admin/product/manage}">product</a>
             <a th:href="@{/admin/account/manage}">account</a>
@@ -279,7 +276,6 @@
             <a th:href="@{/api/home#packages}">packages</a>
             <a th:href="@{/api/home#services}">services</a>
             <a th:href="@{/api/home#gallery}">gallery</a>
-            <a th:href="@{/api/home#review}">review</a>
             <a th:href="@{/api/home#contact}">contact</a>
         </div>
         <div class="box">
